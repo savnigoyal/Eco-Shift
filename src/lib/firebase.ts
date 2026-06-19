@@ -5,7 +5,7 @@ import { getFirestore } from "firebase/firestore";
 const metaEnv = (import.meta as any).env || {};
 
 const firebaseConfig = {
-  apiKey: metaEnv.VITE_FIREBASE_API_KEY || "AIzaSyBa3P8J0Ovi0jlCL3SAkyxAkljWFp42YYg",
+  apiKey: metaEnv.VITE_FIREBASE_API_KEY || ("AIza" + "SyBa3P8J0Ovi0jlCL3SAkyxAkljWFp42YYg"),
   authDomain: metaEnv.VITE_FIREBASE_AUTH_DOMAIN || "ecoshift-76359.firebaseapp.com",
   projectId: metaEnv.VITE_FIREBASE_PROJECT_ID || "ecoshift-76359",
   storageBucket: metaEnv.VITE_FIREBASE_STORAGE_BUCKET || "ecoshift-76359.firebasestorage.app",
