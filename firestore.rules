@@ -1,0 +1,46 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 1. Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // 2. Identity validator
+    function isOwner(userId) {
+      return request.auth != null && request.auth.uid == userId;
+    }
+
+    // 3. Document ID validator
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // 4. Strict Type & Property validation on CarbonInput writes
+    function isValidCarbonInput(data) {
+      return data.keys().hasAll([
+        'transport_mode',
+        'transport_distance',
+        'ac_hours',
+        'laptop_hours',
+        'diet_type',
+        'digital_hours'
+      ]) && data.keys().size() == 6
+      && data.transport_mode is string
+      && (data.transport_mode == 'car' || data.transport_mode == 'bus' || data.transport_mode == 'metro' || data.transport_mode == 'bike' || data.transport_mode == 'cycle')
+      && data.transport_distance is int
+      && data.ac_hours is int
+      && data.laptop_hours is int
+      && data.diet_type is string
+      && (data.diet_type == 'veg' || data.diet_type == 'nonveg' || data.diet_type == 'vegan')
+      && data.digital_hours is int;
+    }
+
+    // 5. Matches of carbon inputs per user
+    match /carbon_inputs/{userId} {
+      allow read: if isOwner(userId);
+      allow create, update: if isOwner(userId) && isValidId(userId) && isValidCarbonInput(request.resource.data);
+      allow delete: if isOwner(userId);
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "EcoShift",
+  "description": "An AI climate intelligence application that maps daily habits into carbon footprint metrics, projection curves, and personalized carbon reduction insights.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

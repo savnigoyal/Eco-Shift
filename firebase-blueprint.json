@@ -1,0 +1,51 @@
+{
+  "entities": {
+    "CarbonInput": {
+      "title": "Carbon Input",
+      "description": "User's recorded carbon usage factors.",
+      "type": "object",
+      "properties": {
+        "transport_mode": {
+          "type": "string",
+          "enum": ["car", "bus", "metro", "bike", "cycle"],
+          "description": "The primary daily transport vehicle category used."
+        },
+        "transport_distance": {
+          "type": "integer",
+          "description": "Approximate daily distance traveled in kilometers."
+        },
+        "ac_hours": {
+          "type": "integer",
+          "description": "Number of hours of air conditioning use per day."
+        },
+        "laptop_hours": {
+          "type": "integer",
+          "description": "Number of hours spent using a laptop per day."
+        },
+        "diet_type": {
+          "type": "string",
+          "enum": ["veg", "nonveg", "vegan"],
+          "description": "User's current general diet category."
+        },
+        "digital_hours": {
+          "type": "integer",
+          "description": "Daily screen and digital consumption hours."
+        }
+      },
+      "required": [
+        "transport_mode",
+        "transport_distance",
+        "ac_hours",
+        "laptop_hours",
+        "diet_type",
+        "digital_hours"
+      ]
+    }
+  },
+  "firestore": {
+    "/carbon_inputs/{userId}": {
+      "schema": "CarbonInput",
+      "description": "Location of a single user's daily logged carbon habits."
+    }
+  }
+}
