@@ -23,7 +23,7 @@ service cloud.firestore {
         'transport_distance',
         'ac_hours',
         'laptop_hours',
-        'diet_type',
+        'waste_habit',
         'digital_hours'
       ]) && data.keys().size() == 6
       && data.transport_mode is string
@@ -31,8 +31,8 @@ service cloud.firestore {
       && data.transport_distance is int
       && data.ac_hours is int
       && data.laptop_hours is int
-      && data.diet_type is string
-      && (data.diet_type == 'veg' || data.diet_type == 'nonveg' || data.diet_type == 'vegan')
+      && data.waste_habit is string
+      && (data.waste_habit == 'high_waste' || data.waste_habit == 'mixed_recycler' || data.waste_habit == 'zero_waste')
       && data.digital_hours is int;
     }
 

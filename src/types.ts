@@ -1,12 +1,12 @@
 export type TransportMode = 'car' | 'bus' | 'metro' | 'bike' | 'cycle';
-export type DietType = 'veg' | 'nonveg' | 'vegan';
+export type WasteHabit = 'high_waste' | 'mixed_recycler' | 'zero_waste';
 
 export interface CarbonInputData {
   transport_mode: TransportMode;
   transport_distance: number; // km/day
   ac_hours: number; // hrs/day
   laptop_hours: number; // hrs/day
-  diet_type: DietType;
+  waste_habit: WasteHabit;
   digital_hours: number; // hrs/day
 }
 

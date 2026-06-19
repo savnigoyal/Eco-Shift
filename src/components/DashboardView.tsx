@@ -16,12 +16,12 @@ export default function DashboardView({ user, carbonData, onNavigate }: Dashboar
 
   // Compute metrics based on actual or fallback inputs
   const stats = carbonData ? calculateCarbonStats(carbonData) : {
-    totalEmissions: 12.4, // Fallback default
+    totalEmissions: 11.9, // Fallback default
     ecoScore: 78,
-    dailySaved: 6.1,
+    dailySaved: 6.6,
     transportEmissions: 5.2,
     electricityEmissions: 4.2,
-    dietEmissions: 3.0,
+    wasteEmissions: 2.5,
     digitalEmissions: 0.6,
   };
 
@@ -37,7 +37,7 @@ export default function DashboardView({ user, carbonData, onNavigate }: Dashboar
           transport_distance: 18,
           ac_hours: 4,
           laptop_hours: 7,
-          diet_type: 'nonveg',
+          waste_habit: 'mixed_recycler',
           digital_hours: 6
         };
 
@@ -108,8 +108,8 @@ export default function DashboardView({ user, carbonData, onNavigate }: Dashboar
               <strong className="block mt-1 text-base text-white">{carbonData.ac_hours} hrs AC</strong>
             </div>
             <div className="p-4 rounded-xl border border-white/5 bg-white/5">
-              <span className="text-xs font-medium text-white/40">Diet Preference</span>
-              <strong className="block mt-1 text-base text-white capitalize">{carbonData.diet_type}</strong>
+              <span className="text-xs font-medium text-white/40">Waste Habit</span>
+              <strong className="block mt-1 text-base text-white capitalize">{carbonData.waste_habit.replace('_', ' ')}</strong>
             </div>
             <div className="p-4 rounded-xl border border-white/5 bg-white/5">
               <span className="text-xs font-medium text-white/40">Digital Footprint</span>

@@ -27,7 +27,13 @@ export default function LoginView({ onNavigate, onSuccess }: LoginViewProps) {
       onSuccess();
     } catch (err: any) {
       console.error('Email sign in error:', err);
-      setErrorMsg(err.message || 'Login failed. Please specify correct credentials.');
+      const code = err?.code || '';
+      const msg = err?.message || '';
+      if (code === 'auth/invalid-credential' || msg.includes('invalid-credential') || code === 'auth/user-not-found' || msg.includes('user-not-found')) {
+        setErrorMsg('Incorrect email or password, or this account does not exist yet. Please register using the "Sign up" button below if you are new!');
+      } else {
+        setErrorMsg(msg || 'Login failed. Please specify correct credentials.');
+      }
     } finally {
       setLoading(false);
     }

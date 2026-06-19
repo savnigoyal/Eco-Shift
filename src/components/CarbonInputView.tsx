@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { User } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import { db, handleFirestoreError, OperationType } from '../lib/firebase';
-import { CarbonInputData, TransportMode, DietType } from '../types';
-import { ShieldAlert, Car, Zap, ChefHat, Monitor, Sparkles } from 'lucide-react';
+import { CarbonInputData, TransportMode, WasteHabit } from '../types';
+import { ShieldAlert, Car, Zap, Trash2, Monitor, Sparkles } from 'lucide-react';
 
 interface CarbonInputViewProps {
   user: User;
@@ -18,7 +18,7 @@ export default function CarbonInputView({ user, existingData, onSaveSuccess, onN
   const [transportDistance, setTransportDistance] = useState<number>(existingData?.transport_distance ?? 18);
   const [acHours, setAcHours] = useState<number>(existingData?.ac_hours ?? 4);
   const [laptopHours, setLaptopHours] = useState<number>(existingData?.laptop_hours ?? 7);
-  const [dietType, setDietType] = useState<DietType>(existingData?.diet_type || 'nonveg');
+  const [wasteHabit, setWasteHabit] = useState<WasteHabit>(existingData?.waste_habit || 'mixed_recycler');
   const [digitalHours, setDigitalHours] = useState<number>(existingData?.digital_hours ?? 6);
 
   const [saving, setSaving] = useState(false);
@@ -36,7 +36,7 @@ export default function CarbonInputView({ user, existingData, onSaveSuccess, onN
       transport_distance: Number(transportDistance),
       ac_hours: Number(acHours),
       laptop_hours: Number(laptopHours),
-      diet_type: dietType,
+      waste_habit: wasteHabit,
       digital_hours: Number(digitalHours),
     };
 
@@ -186,24 +186,24 @@ export default function CarbonInputView({ user, existingData, onSaveSuccess, onN
           </div>
         </section>
 
-        {/* Category 3: Diet preference */}
+        {/* Category 3: Waste & Recycling preference */}
         <section className="p-5 sm:p-6 rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-md">
           <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-500 mb-4 shadow-sm">
-            <ChefHat className="w-5 h-5" />
+            <Trash2 className="w-5 h-5" />
           </div>
-          <h2 className="text-xl font-bold text-white mb-4">Diet</h2>
+          <h2 className="text-xl font-bold text-white mb-4">Waste & Recycling</h2>
 
           <div className="grid gap-1.5">
-            <label className="text-xs font-bold text-white/60 tracking-wider uppercase" htmlFor="diet-select">Diet type</label>
+            <label className="text-xs font-bold text-white/60 tracking-wider uppercase" htmlFor="waste-select">Waste Category</label>
             <select
-              id="diet-select"
+              id="waste-select"
               className="w-full bg-[#030705]/80 border border-white/10 focus:border-amber-500 rounded-xl py-3 px-4 text-white outline-none"
-              value={dietType}
-              onChange={(e) => setDietType(e.target.value as DietType)}
+              value={wasteHabit}
+              onChange={(e) => setWasteHabit(e.target.value as WasteHabit)}
             >
-              <option value="veg">Vegetarian (Planet Conscious)</option>
-              <option value="nonveg">Non-Vegetarian (Heavy footprint)</option>
-              <option value="vegan">Vegan (Zero Livestock Impact)</option>
+              <option value="zero_waste">Zero Waste (Compost, reusables, recycle all)</option>
+              <option value="mixed_recycler">Mixed Recycler (Some packaging, recycle paper/plastic)</option>
+              <option value="high_waste">High Waste (No recycling, heavy single-use plastic)</option>
             </select>
           </div>
         </section>

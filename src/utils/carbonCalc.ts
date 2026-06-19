@@ -17,20 +17,19 @@ export function calculateCarbonStats(data: CarbonInputData) {
   const acEmissions = data.ac_hours * 1.2;
   const laptopEmissions = data.laptop_hours * 0.05;
 
-  // 3. Diet
-  // Vegan: 1.5 kg/day, Veg: 3.0 kg/day, Non-veg: 6.5 kg/day
-  let dietEmissions = 6.5;
-  if (data.diet_type === 'vegan') dietEmissions = 1.5;
-  else if (data.diet_type === 'veg') dietEmissions = 3.0;
+  // 3. Waste & Recycling
+  // Zero-Waste: 0.8 kg/day, Mixed Recycler: 2.5 kg/day, High Waste: 5.5 kg/day
+  let wasteEmissions = 5.5;
+  if (data.waste_habit === 'zero_waste') wasteEmissions = 0.8;
+  else if (data.waste_habit === 'mixed_recycler') wasteEmissions = 2.5;
 
   // 4. Digital (Devices, Cloud, Streaming)
   // 0.1 kg per hour
   const digitalEmissions = data.digital_hours * 0.1;
 
-  const totalEmissions = parseFloat((transportEmissions + acEmissions + laptopEmissions + dietEmissions + digitalEmissions).toFixed(1));
+  const totalEmissions = parseFloat((transportEmissions + acEmissions + laptopEmissions + wasteEmissions + digitalEmissions).toFixed(1));
 
-  // Eco Score: 100 - (totalEmissions / 25) * 100, clamped between 10 and 100
-  // Low emissions (e.g. 3-4 kg) gets high score (90+), High emissions gets low score
+  // Eco Score: 100 - (totalEmissions / 22) * 80, clamped between 10 and 100
   let ecoScore = Math.round(100 - (totalEmissions / 22) * 80);
   ecoScore = Math.max(10, Math.min(100, ecoScore));
 
@@ -43,7 +42,7 @@ export function calculateCarbonStats(data: CarbonInputData) {
     dailySaved,
     transportEmissions: parseFloat(transportEmissions.toFixed(1)),
     electricityEmissions: parseFloat((acEmissions + laptopEmissions).toFixed(1)),
-    dietEmissions: parseFloat(dietEmissions.toFixed(1)),
+    wasteEmissions: parseFloat(wasteEmissions.toFixed(1)),
     digitalEmissions: parseFloat(digitalEmissions.toFixed(1)),
   };
 }
@@ -52,17 +51,19 @@ export function computeRiskScore(data: CarbonInputData, year: number) {
   // Normalize components (0 to 1)
   const normDistance = Math.min(1, data.transport_distance / 80);
   const normAC = Math.min(1, data.ac_hours / 14);
-  const dietImpact = data.diet_type === 'vegan' ? 0.25 : data.diet_type === 'veg' ? 0.55 : 1.0;
-  const normDiet = Math.min(1, dietImpact);
+  let wasteImpact = 1.0;
+  if (data.waste_habit === 'zero_waste') wasteImpact = 0.25;
+  else if (data.waste_habit === 'mixed_recycler') wasteImpact = 0.6;
+  const normWaste = Math.min(1, wasteImpact);
   const normDigital = Math.min(1, data.digital_hours / 24);
 
   // Weighted sum
   const transportWeight = 0.42;
   const electricityWeight = 0.25;
-  const foodWeight = 0.18;
+  const wasteWeight = 0.18;
   const digitalWeight = 0.15;
 
-  const baseImpact = normDistance * transportWeight + normAC * electricityWeight + normDiet * foodWeight + normDigital * digitalWeight;
+  const baseImpact = normDistance * transportWeight + normAC * electricityWeight + normWaste * wasteWeight + normDigital * digitalWeight;
 
   // Year factor: 2025 has low risk factor (0), 2050 has high risk factor (1)
   const yearFactor = (year - 2025) / 25;

@@ -38,7 +38,15 @@ export default function SignUpView({ onNavigate, onSuccess }: SignUpViewProps) {
       onSuccess();
     } catch (err: any) {
       console.error('Email registration error:', err);
-      setErrorMsg(err.message || 'Registration failed. Please attempt with valid parameters.');
+      const code = err?.code || '';
+      const msg = err?.message || '';
+      if (code === 'auth/email-already-in-use' || msg.includes('email-already-in-use')) {
+        setErrorMsg('This email address is already in use. Try logging in instead!');
+      } else if (code === 'auth/weak-password' || msg.includes('weak-password')) {
+        setErrorMsg('Weak password. Please use a password with at least 6 characters.');
+      } else {
+        setErrorMsg(msg || 'Registration failed. Please attempt with valid parameters.');
+      }
     } finally {
       setLoading(false);
     }

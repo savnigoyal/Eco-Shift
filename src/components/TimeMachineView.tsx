@@ -17,7 +17,7 @@ export default function TimeMachineView({ carbonData, onNavigate }: TimeMachineV
     transport_distance: 18,
     ac_hours: 4,
     laptop_hours: 7,
-    diet_type: 'nonveg',
+    waste_habit: 'mixed_recycler',
     digital_hours: 6
   };
 
@@ -173,7 +173,7 @@ export default function TimeMachineView({ carbonData, onNavigate }: TimeMachineV
           Planetary risk horizon in {selectedYear}
         </h2>
         <p className="mt-2 text-white/50 text-sm leading-6">
-          Our simulation modules combine your daily transport, eating, and electricity variables with long-term climate matrices to compute target planetary carbon load scores.
+          Our simulation modules combine your daily transport, waste reduction, and electricity variables with long-term climate matrices to compute target planetary carbon load scores.
         </p>
       </section>
 

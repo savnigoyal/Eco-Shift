@@ -22,10 +22,10 @@
           "type": "integer",
           "description": "Number of hours spent using a laptop per day."
         },
-        "diet_type": {
+        "waste_habit": {
           "type": "string",
-          "enum": ["veg", "nonveg", "vegan"],
-          "description": "User's current general diet category."
+          "enum": ["high_waste", "mixed_recycler", "zero_waste"],
+          "description": "User's waste production and recycling habit style."
         },
         "digital_hours": {
           "type": "integer",
@@ -37,7 +37,7 @@
         "transport_distance",
         "ac_hours",
         "laptop_hours",
-        "diet_type",
+        "waste_habit",
         "digital_hours"
       ]
     }
